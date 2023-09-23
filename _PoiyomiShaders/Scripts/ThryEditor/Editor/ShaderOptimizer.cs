@@ -1548,10 +1548,13 @@ namespace Thry
                                     sb.Append($"({constantValue} /*{constant.name}*/)");
                                     break;
                                 case PropertyType.Vector:
-                                    sb.Append("float4("+constant.value.x.ToString(CultureInfo.InvariantCulture)+","
-                                                    +constant.value.y.ToString(CultureInfo.InvariantCulture)+","
-                                                    +constant.value.z.ToString(CultureInfo.InvariantCulture)+","
-                                                    +constant.value.w.ToString(CultureInfo.InvariantCulture)+")");
+                                    if (constant.name is "LightColor" or "ShadowColor") // BRC needs these, don't optimize them
+                                        sb.Append(constant.name);
+                                    else
+                                        sb.Append("float4("+constant.value.x.ToString(CultureInfo.InvariantCulture)+","
+                                                        +constant.value.y.ToString(CultureInfo.InvariantCulture)+","
+                                                        +constant.value.z.ToString(CultureInfo.InvariantCulture)+","
+                                                        +constant.value.w.ToString(CultureInfo.InvariantCulture)+")");
                                     break;
                             }
                             sb.Append(lines[i], constantIndex+constant.name.Length, lines[i].Length-constantIndex-constant.name.Length);
